@@ -1,4 +1,4 @@
-name =  K8s-cluster
+name =  k8s-cluster
 namespace = monitoring
 
 kubectl := kubectl -n $(namespace)
