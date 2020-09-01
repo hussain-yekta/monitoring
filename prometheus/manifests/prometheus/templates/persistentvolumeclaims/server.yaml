@@ -1,6 +1,28 @@
 ---
 # Source: prometheus/templates/persistentvolumeclaims/server.yaml
 apiVersion: v1
+kind: PersistentVolume
+metadata:
+  labels:
+    component: "server"
+    app: prometheus
+    release: RELEASE-NAME
+    chart: prometheus-11.12.0
+    heritage: Helm
+  name: RELEASE-NAME-prometheus-server-pv
+  namespace: NAMESPACE
+spec:
+  capacity:
+    storage: 2Gi
+  volumeMode: Filesystem
+  accessModes:
+    - ReadWriteOnce
+  persistentVolumeReclaimPolicy: Delete
+  storageClassName: prometheus-storage
+  local:
+    path: /opt/prometheus
+---
+apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
   labels:
@@ -17,4 +39,7 @@ spec:
   resources:
     requests:
       storage: "2Gi"
-  storageClassName: alertmanager-storage
+  storageClassName: prometheus-storage
+  selector:
+    matchLabels:
+      component: "server"
