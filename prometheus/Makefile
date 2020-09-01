@@ -1,5 +1,5 @@
 name =  k8s-cluster
-namespace = monitoring
+namespace = metrics
 
 kubectl := kubectl -n $(namespace)
 
@@ -60,4 +60,4 @@ delete:
 # Test the connection 
 forward:
 	@$(kubectl) port-forward $$($(kubectl) get pod \
-		-l "app=prometheus" -o jsonpath="{.items[0].metadata.name}") 9090
+		-l "app=prometheus,component=server" -o jsonpath="{.items[0].metadata.name}")  9090
