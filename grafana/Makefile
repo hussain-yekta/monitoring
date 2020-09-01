@@ -1,5 +1,5 @@
 name =  k8s-cluster
-namespace = monitoring
+namespace = metrics
 
 kubectl := kubectl -n $(namespace)
 
@@ -36,3 +36,9 @@ run:
 
 delete:
 	@cat namespace.yaml | sed $(replacements) | kubectl delete -f -
+
+
+# Test the connection 
+forward:
+	@$(kubectl) port-forward $$($(kubectl) get pod \
+		-l "app.kubernetes.io/name=grafana" -o jsonpath="{.items[0].metadata.name}")  3000

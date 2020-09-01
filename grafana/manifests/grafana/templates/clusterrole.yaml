@@ -10,4 +10,5 @@ metadata:
     app.kubernetes.io/version: "7.1.1"
     app.kubernetes.io/managed-by: Helm
   name: RELEASE-NAME-grafana-clusterrole
+  namespace: NAMESPACE
 rules: []
