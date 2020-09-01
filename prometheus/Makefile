@@ -58,6 +58,6 @@ delete:
 
 
 # Test the connection 
-# forward:
-	# @$(kubectl) port-forward $$($(kubectl) get pod \
-		-l "app=prometheus" -o jsonpath="{.items[0].metadata.name}")  30000:30000
+forward:
+	@$(kubectl) port-forward $$($(kubectl) get pod \
+		-l "app=prometheus" -o jsonpath="{.items[0].metadata.name}") 9090

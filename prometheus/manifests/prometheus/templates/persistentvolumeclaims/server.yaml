@@ -18,22 +18,12 @@ spec:
   accessModes:
     - ReadWriteOnce
   persistentVolumeReclaimPolicy: Delete
-  storageClassName: prometheus-storage
-  local:
-    path: /opt/prometheus
-  nodeAffinity:
-      required:
-        nodeSelectorTerms:
-        - matchExpressions:
-          - key: kubernetes.io/hostname
-            operator: In
-            values:
-            - K8s-cluster-Worker-1
-            - K8s-cluster-Worker-2
 ---
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
+  annotations:
+    volume.beta.kubernetes.io/storage-provisioner: kubernetes.io/aws-ebs
   labels:
     component: "server"
     app: prometheus
@@ -48,7 +38,3 @@ spec:
   resources:
     requests:
       storage: "2Gi"
-  storageClassName: prometheus-storage
-  selector:
-    matchLabels:
-      component: "server"

@@ -10,17 +10,17 @@ s|RELEASE-NAME|$(name)|g;\
 ############################################################################################
 
 
-# Create namespace for Prometheus
+# Create namespace for Grafana
 namespace:
 	@cat namespace.yaml | sed $(replacements) | kubectl apply -f -
 
-# Delete namespace for Prometheus
+# Delete namespace for Grafana
 delete-namespace:
 	@cat namespace.yaml | sed $(replacements) | kubectl delete -f -
 
 
 
-# Creating resources for Prometheus
+# Creating resources for Grafana
 run:
 	@cat manifests/grafana/templates/clusterrole.yaml | sed $(replacements) | kubectl apply -f -
 	@cat manifests/grafana/templates/clusterrolebinding.yaml | sed $(replacements) | kubectl apply -f -
@@ -32,3 +32,7 @@ run:
 	@cat manifests/grafana/templates/secret.yaml | sed $(replacements) | kubectl apply -f -
 	@cat manifests/grafana/templates/service.yaml | sed $(replacements) | kubectl apply -f -
 	@cat manifests/grafana/templates/serviceaccount.yaml | sed $(replacements) | kubectl apply -f -
+
+
+delete:
+	@cat namespace.yaml | sed $(replacements) | kubectl delete -f -
