@@ -34,11 +34,24 @@ run:
 	@cat manifests/grafana/templates/serviceaccount.yaml | sed $(replacements) | kubectl apply -f -
 
 
-delete:
-	@cat namespace.yaml | sed $(replacements) | kubectl delete -f -
+stop:
+	@cat manifests/grafana/templates/deployment.yaml  | sed $(replacements) | kubectl delete -f - --ignore-not-found
 
 
-# Test the connection 
+destroy: stop
+	@cat manifests/grafana/templates/clusterrole.yaml | sed $(replacements) | kubectl delete -f - --ignore-not-found
+	@cat manifests/grafana/templates/clusterrolebinding.yaml | sed $(replacements) | kubectl delete -f - --ignore-not-found
+	@cat manifests/grafana/templates/configmap.yaml | sed $(replacements) | kubectl delete -f - --ignore-not-found
+	@cat manifests/grafana/templates/podsecuritypolicy.yaml | sed $(replacements) | kubectl delete -f - --ignore-not-found
+	@cat manifests/grafana/templates/role.yaml | sed $(replacements) | kubectl delete -f - --ignore-not-found
+	@cat manifests/grafana/templates/rolebinding.yaml | sed $(replacements) | kubectl delete -f - --ignore-not-found
+	@cat manifests/grafana/templates/secret.yaml | sed $(replacements) | kubectl delete -f - --ignore-not-found
+	@cat manifests/grafana/templates/service.yaml | sed $(replacements) | kubectl delete -f - --ignore-not-found
+	@cat manifests/grafana/templates/serviceaccount.yaml | sed $(replacements) | kubectl delete -f - --ignore-not-found
+
+
+
+# Port-forward to get to the Grafana dashboard
 forward:
 	@$(kubectl) port-forward $$($(kubectl) get pod \
 		-l "app.kubernetes.io/name=grafana" -o jsonpath="{.items[0].metadata.name}")  3000
