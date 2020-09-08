@@ -21,7 +21,7 @@ delete-namespace:
 
 
 # Creating resources for Prometheus
-run:
+run: namespace
 	@cat manifests/prometheus/charts/kube-state-metrics/templates/clusterrole.yaml | sed $(replacements) | kubectl apply -f -
 	@cat manifests/prometheus/charts/kube-state-metrics/templates/clusterrolebinding.yaml | sed $(replacements) | kubectl apply -f -
 	@cat manifests/prometheus/charts/kube-state-metrics/templates/deployment.yaml | sed $(replacements) | kubectl apply -f -
